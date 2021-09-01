@@ -22,10 +22,6 @@ public class InstructorDTO {
     @NotBlank(message = "Instructor Phone Number is mandatory")
     private String instructorPhoneNumber;
 
-    private double fixedSalary;
-
-    private double hourlySalary;
-
     @NotNull(message = "Address Id is mandatory")
     private long addressId;
 
