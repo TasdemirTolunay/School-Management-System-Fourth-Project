@@ -12,19 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
 public class Course extends  BaseEntity{
 
     //Variables
     private String courseName;
     private String courseCode;
     private double courseCreditScore;
-
-    public Course(String courseName, String courseCode, double courseCreditScore) {
-        this.courseName = courseName;
-        this.courseCode = courseCode;
-        this.courseCreditScore = courseCreditScore;
-    }
 
     //Relations with other classes
     @JsonBackReference

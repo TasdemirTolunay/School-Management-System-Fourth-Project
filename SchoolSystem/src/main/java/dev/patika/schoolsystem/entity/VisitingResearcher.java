@@ -5,23 +5,10 @@ import lombok.*;
 import javax.persistence.Entity;
 
 @Entity
-@Getter
-@Setter
-@ToString
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class VisitingResearcher extends Instructor {
 
     private double hourlySalary;
-
-    @Builder
-    public VisitingResearcher(String instructorName, String instructorPhoneNumber, double hourlySalary) {
-
-        super(instructorName, instructorPhoneNumber);
-        this.hourlySalary = hourlySalary;
-
-    }
-
-    public VisitingResearcher() {
-
-    }
 
 }

@@ -1,6 +1,5 @@
 package dev.patika.schoolsystem.dto;
 
-import dev.patika.schoolsystem.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO extends BaseEntity{
+public class AddressDTO{
 
     @ApiModelProperty(hidden = true)
     private long id;

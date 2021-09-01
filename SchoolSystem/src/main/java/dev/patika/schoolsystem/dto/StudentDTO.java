@@ -1,6 +1,5 @@
 package dev.patika.schoolsystem.dto;
 
-import dev.patika.schoolsystem.ageconstraint.StudentAgeConstraint;
 import dev.patika.schoolsystem.entity.Gender;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,6 @@ public class StudentDTO {
     @NotBlank(message = "Student name is mandatory")
     private String studentName;
 
-    @StudentAgeConstraint
     private LocalDate studentBirthDate;
 
     @NotNull(message = "Gender is mandatory")

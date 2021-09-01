@@ -3,7 +3,6 @@ package dev.patika.schoolsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
 public class Student extends BaseEntity{
 
     //Variables
@@ -23,12 +22,6 @@ public class Student extends BaseEntity{
     private LocalDate studentBirthDate;
     @Enumerated(EnumType.STRING)
     private Gender studentGender;
-
-    public Student(String studentName, LocalDate studentBirthDate, Gender studentGender) {
-        this.studentName = studentName;
-        this.studentBirthDate = studentBirthDate;
-        this.studentGender = studentGender;
-    }
 
     //Relations with other classes
     @JsonManagedReference

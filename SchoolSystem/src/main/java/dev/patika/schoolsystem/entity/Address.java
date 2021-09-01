@@ -12,19 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
 public class Address extends BaseEntity{
 
     //Variables
     private String country;
     private String city;
     private String plateCode;
-
-    public Address(String country, String city, String plateCode) {
-        this.country = country;
-        this.city = city;
-        this.plateCode = plateCode;
-    }
 
     //Relations with other classes
     @JsonManagedReference
