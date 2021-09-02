@@ -1,5 +1,6 @@
 package dev.patika.schoolsystem.dto;
 
+import dev.patika.schoolsystem.entity.BaseEntity;
 import dev.patika.schoolsystem.entity.Gender;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentDTO {
+public class StudentDTO extends BaseEntity {
 
     @ApiModelProperty(hidden = true)
     private long id;
@@ -27,7 +28,7 @@ public class StudentDTO {
     private Gender studentGender;
 
     @NotNull(message = "Address Id is mandatory")
-    private long addressId;
+    private int addressId;
 
 
 }

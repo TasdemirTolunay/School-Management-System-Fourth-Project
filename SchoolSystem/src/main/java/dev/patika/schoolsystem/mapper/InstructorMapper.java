@@ -1,20 +1,51 @@
 package dev.patika.schoolsystem.mapper;
 
 import dev.patika.schoolsystem.dto.InstructorDTO;
+import dev.patika.schoolsystem.dto.PermanentInstructorDTO;
+import dev.patika.schoolsystem.dto.VisitingResearcherDTO;
 import dev.patika.schoolsystem.entity.Instructor;
+import dev.patika.schoolsystem.service.InstructorService;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PermanentInstructorMapper.class, VisitingResearcherMapper.class})
 public abstract class InstructorMapper {
 
-    @Mapping(target = "address", expression = "java(instructorService.findAddressById(instructorDTO.getAddressId()))")
-    public abstract Instructor mapInstructorToInstructorDTO(InstructorDTO instructorDTO);
-    public abstract InstructorDTO mapInstructorDTOToInstructor(Instructor instructor);
-    public abstract List<InstructorDTO> mapInstructorDTOListToInstructorList(Collection<Instructor> instructors);
-    public abstract List<Instructor> mapInstructorListToInstructorDTOList(Collection<InstructorDTO> instructorDTOS);
+    @Autowired
+    protected InstructorService instructorService;
+
+    @Mapping(target = "instructorAddress", expression = "java(instructorService.findAddressById(instructorDTO.getAddressId()))")
+    public abstract Instructor mapInstructorDTOToInstructor(InstructorDTO instructorDTO);
+
+    @IterableMapping(elementTargetType = InstructorDTO.class)
+    public abstract InstructorDTO mapInstructorToInstructorDTO(Instructor instructor);
+
+    @IterableMapping(elementTargetType = InstructorDTO.class)
+    public abstract List<InstructorDTO> mapInstructorListToInstructorDTOList(Collection<Instructor> instructors);
+
+    public abstract List<Instructor> mapInstructorDTOListToInstructorList(Collection<InstructorDTO> instructorDTOS);
+
+    @IterableMapping(elementTargetType = PermanentInstructorDTO.class)
+    public abstract PermanentInstructorDTO mapInstructorToPermanentInstructorDTO(Instructor instructor);
+
+    public abstract Instructor mapPermanentInstructorDTOToInstructor(PermanentInstructorDTO permanentInstructorDTO);
+
+    @IterableMapping(elementTargetType = VisitingResearcherDTO.class)
+    public abstract VisitingResearcherDTO mapInstructorToVisitingResearcherDTO(Instructor instructor);
+
+    public abstract Instructor mapVisitingResearcherDTOToInstructor(VisitingResearcherDTO visitingResearcherDTO);
+
+    @IterableMapping(elementTargetType = VisitingResearcherDTO.class)
+    public abstract List<VisitingResearcherDTO> mapInstructorListToVisitingResearcherDTOList(Collection<Instructor> instructors);
+
+
+    @IterableMapping(elementTargetType = PermanentInstructorDTO.class)
+    public abstract List<PermanentInstructorDTO> mapInstructorListToPermanentInstructorDTOList(Collection<Instructor> instructors);
 
 }

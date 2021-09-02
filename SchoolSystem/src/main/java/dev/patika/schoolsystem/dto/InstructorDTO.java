@@ -1,5 +1,6 @@
 package dev.patika.schoolsystem.dto;
 
+import dev.patika.schoolsystem.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InstructorDTO {
+public class InstructorDTO extends BaseEntity {
 
     @ApiModelProperty(hidden = true)
     private long id;
@@ -23,6 +24,6 @@ public class InstructorDTO {
     private String instructorPhoneNumber;
 
     @NotNull(message = "Address Id is mandatory")
-    private long addressId;
+    private int addressId;
 
 }

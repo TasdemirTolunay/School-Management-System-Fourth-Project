@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class VisitingResearcherMapper {
 
-    public abstract List<VisitingResearcher> mapVisitingResearcherListToVisitingResearcherDTOList(Collection<VisitingResearcherDTO> visitingResearcherDTOS);
-    public abstract List<VisitingResearcherDTO> mapVisitingResearcherDTOListToVisitingResearcherList(Collection<VisitingResearcher> visitingResearchers);
-    public abstract VisitingResearcher mapVisitingResearcherToVisitingResearcherDTO(VisitingResearcherDTO visitingResearcherDTO);
-    public abstract VisitingResearcherDTO mapVisitingResearcherDTOToVisitingResearcher(VisitingResearcher visitingResearcher);
+    public abstract List<VisitingResearcher> mapVisitingResearcherDTOListToVisitingResearcherList(Collection<VisitingResearcherDTO> visitingResearcherDTOS);
+    public abstract List<VisitingResearcherDTO> mapVisitingResearcherListToVisitingResearcherDTOList(Collection<VisitingResearcher> visitingResearchers);
+    public abstract VisitingResearcher mapVisitingResearcherDTOToVisitingResearcher(VisitingResearcherDTO visitingResearcherDTO);
+    public abstract VisitingResearcherDTO mapVisitingResearcherToVisitingResearcherDTO(VisitingResearcher visitingResearcher);
 
 }

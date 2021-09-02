@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class PermanentInstructorMapper {
 
-    public abstract List<PermanentInstructor> mapPermanentInstructorListToPermanentInstructorDTOList(Collection<PermanentInstructorDTO> permanentInstructorDTOS);
-    public abstract List<PermanentInstructorDTO> mapPermanentInstructorDTOListToPermanentInstructorList(Collection<PermanentInstructor> permanentInstructors);
-    public abstract PermanentInstructor mapPermanentInstructorToPermanentInstructorDTO(PermanentInstructorDTO permanentInstructorDTO);
-    public abstract PermanentInstructorDTO mapPermanentInstructorDTOToPermanentInstructor(PermanentInstructor permanentInstructor);
+    public abstract List<PermanentInstructor> mapPermanentInstructorDTOListToPermanentInstructorList(Collection<PermanentInstructorDTO> permanentInstructorDTOS);
+    public abstract List<PermanentInstructorDTO> mapPermanentInstructorListToPermanentInstructorDTOList(Collection<PermanentInstructor> permanentInstructors);
+    public abstract PermanentInstructor mapPermanentInstructorDTOToPermanentInstructor(PermanentInstructorDTO permanentInstructorDTO);
+    public abstract PermanentInstructorDTO mapPermanentInstructorToPermanentInstructorDTO(PermanentInstructor permanentInstructor);
 
 }

@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
 public class Instructor extends BaseEntity{
 
     //Variables
@@ -22,7 +21,7 @@ public class Instructor extends BaseEntity{
     //Relations with other classes
     @JsonBackReference
     @ManyToOne
-    private Address address;
+    Address instructorAddress;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "instructor")

@@ -1,5 +1,6 @@
 package dev.patika.schoolsystem.dto;
 
+import dev.patika.schoolsystem.entity.BaseEntity;
 import dev.patika.schoolsystem.entity.Student;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseDTO {
+public class CourseDTO extends BaseEntity {
 
     @ApiModelProperty(hidden = true)
     private long id;

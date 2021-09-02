@@ -30,6 +30,6 @@ public class Student extends BaseEntity{
 
     @JsonBackReference
     @ManyToOne
-    private Address address;
+    Address studentAddress;
 
 }

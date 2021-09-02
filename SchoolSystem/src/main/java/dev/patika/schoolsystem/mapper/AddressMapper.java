@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class AddressMapper {
 
-    public abstract List<Address> mapAddressListToAddressDTOList(Collection<AddressDTO> addressDTOS);
-    public abstract List<AddressDTO> mapAddressDTOListToAddressList(Collection<Address> addresses);
-    public abstract Address mapAddressToAddressDTO(AddressDTO addressDTO);
-    public abstract AddressDTO mapAddressDTOToAddress(Address address);
+    public abstract List<Address> mapAddressDTOListToAddressList(Collection<AddressDTO> addressDTOS);
+    public abstract List<AddressDTO> mapAddressListToAddressDTOList(Collection<Address> addresses);
+    public abstract Address mapAddressDTOToAddress(AddressDTO addressDTO);
+    public abstract AddressDTO mapAddressToAddressDTO(Address address);
 
 }
