@@ -2,6 +2,8 @@ package dev.patika.schoolsystem.service;
 
 import dev.patika.schoolsystem.dto.AddressDTO;
 import dev.patika.schoolsystem.entity.Address;
+import dev.patika.schoolsystem.entity.Instructor;
+import dev.patika.schoolsystem.entity.Student;
 import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.mapper.AddressMapper;
@@ -79,6 +81,15 @@ public class AddressService {
     @Transactional
     public String deleteAddressById(long addressId){
 
+        List<Address> addressList = new ArrayList<>();
+        Iterable<Address> iteAddress = addressRepository.findAll();
+        iteAddress.iterator().forEachRemaining(addressList :: add);
+        if(addressList.isEmpty()){
+
+            throw new EmptyListException("List is Empty!!!");
+
+        }
+        addressList.remove(addressRepository.findById(addressId).get());
         addressRepository.deleteById(addressId);
         return "Address id = " + addressId + " Deleted....";
 

@@ -7,6 +7,8 @@ import dev.patika.schoolsystem.dto.StudentWithCoursesDTO;
 import dev.patika.schoolsystem.entity.Course;
 import dev.patika.schoolsystem.entity.Instructor;
 import dev.patika.schoolsystem.entity.Student;
+import dev.patika.schoolsystem.exceptions.CourseIsAlreadyExistException;
+import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.StudentNumberForOneCourseExceededException;
 import dev.patika.schoolsystem.mapper.CourseMapper;
@@ -71,8 +73,16 @@ public class CourseService {
 
         Course foundCourse = courseWithStudentsMapper.mapCourseWithStudentsDTOToCourse(courseWithStudentsDTO);
         List<Student> students = foundCourse.getStudents();
+        if(courseRepository.selectExistsCourseCode(foundCourse.getCourseCode())){
+
+            throw new CourseIsAlreadyExistException("Course With CourseCode : " + foundCourse.getCourseCode() + " is already exists!!!!");
+
+        }
+
         if(students.size() > 20){
+
             throw new StudentNumberForOneCourseExceededException("A Course can have a maximum of 20 Students!!!");
+
         }
         courseRepository.save(foundCourse);
         return courseMapper.mapCourseToCourseDTO(foundCourse);
@@ -95,6 +105,15 @@ public class CourseService {
     @Transactional
     public String deleteCourseById(long courseId){
 
+        List<Course> courseList = new ArrayList<>();
+        Iterable<Course> courseIterable = courseRepository.findAll();
+        courseIterable.iterator().forEachRemaining(courseList :: add);
+        if(courseList.isEmpty()){
+
+            throw new EmptyListException("List is Empty!!!");
+
+        }
+        courseList.remove(courseRepository.findById(courseId).get());
         courseRepository.deleteById(courseId);
         return "Course id = " + courseId + " Deleted....";
 

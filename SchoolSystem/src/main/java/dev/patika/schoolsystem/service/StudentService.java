@@ -7,6 +7,7 @@ import dev.patika.schoolsystem.dto.StudentWithCoursesDTO;
 import dev.patika.schoolsystem.entity.Address;
 import dev.patika.schoolsystem.entity.Course;
 import dev.patika.schoolsystem.entity.Student;
+import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.StudentAgeNotValidException;
 import dev.patika.schoolsystem.mapper.AddressMapper;
@@ -93,6 +94,15 @@ public class StudentService {
     @Transactional
     public String deleteStudentById(long studentId){
 
+        List<Student> studentList = new ArrayList<>();
+        Iterable<Student> studentIterable = studentRepository.findAll();
+        studentIterable.iterator().forEachRemaining(studentList :: add);
+        if(studentList.isEmpty()){
+
+            throw new EmptyListException("List is Empty!!!");
+
+        }
+        studentList.remove(studentRepository.findById(studentId).get());
         studentRepository.deleteById(studentId);
         return "Student id = " + studentId + " Deleted....";
 
