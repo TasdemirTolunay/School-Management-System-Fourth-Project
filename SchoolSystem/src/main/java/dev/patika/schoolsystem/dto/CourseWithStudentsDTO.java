@@ -1,20 +1,20 @@
 package dev.patika.schoolsystem.dto;
 
-import dev.patika.schoolsystem.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseDTO extends BaseEntity {
+public class CourseWithStudentsDTO{
 
     @ApiModelProperty(hidden = true)
     private long id;
@@ -31,7 +31,7 @@ public class CourseDTO extends BaseEntity {
     @NotNull(message = "Instructor id is mandatory")
     private long instructorId;
 
-    @Max(20)
-    private int numberOfStudents;
+    @Size(max = 20)
+    private List<Long> studentsId;
 
 }

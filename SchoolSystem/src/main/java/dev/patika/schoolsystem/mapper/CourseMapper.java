@@ -16,10 +16,9 @@ public abstract class CourseMapper {
     @Autowired
     protected CourseService courseService;
 
-    @Mapping(target = "instructor", expression = "java(courseService.findInstructorById(courseDTO.getInstructorId()))")
-    public abstract Course mapCourseDTOToCourse(CourseDTO courseDTO);
+    @Mapping(target = "numberOfStudents", expression = "java(courseService.getNumberOfStudents())")
+    @Mapping(target = "instructorId", expression = "java(courseService.instructorOfCourseId(course.getId()))")
     public abstract CourseDTO mapCourseToCourseDTO(Course course);
     public abstract List<CourseDTO> mapCourseListToCourseDTOList(Collection<Course> courses);
-    public abstract List<Course> mapCourseDTOListToCourseList(Collection<CourseDTO> courseDTOS);
 
 }
