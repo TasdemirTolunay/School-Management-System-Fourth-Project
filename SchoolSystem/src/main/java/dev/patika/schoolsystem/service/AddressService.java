@@ -5,11 +5,13 @@ import dev.patika.schoolsystem.entity.Address;
 import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.mapper.AddressMapper;
+import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.AddressRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public class AddressService {
     @Autowired
     private AddressMapper addressMapper;
 
+    @Autowired
+    private StudentWithCoursesMapper studentWithCoursesMapper;
+
 
     public List<AddressDTO> findAllAddress(){
 
@@ -41,15 +46,64 @@ public class AddressService {
 
     }
 
+    public AddressDTO findByAddressId(long addressId){
+
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+        return addressMapper.mapAddressToAddressDTO(address);
+
+    }
+
+    @Transactional
+    public AddressDTO saveAddress(AddressDTO addressDTO){
+
+        Address address = addressMapper.mapAddressDTOToAddress(addressDTO);
+        return addressMapper.mapAddressToAddressDTO(addressRepository.save(address));
+
+    }
+
+    @Transactional
+    public AddressDTO updateAddress(AddressDTO addressDTO, long addressId){
+
+        Address foundAddress = addressRepository.findById(addressId)
+                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+        foundAddress.setCity(addressDTO.getCity());
+        foundAddress.setCountry(addressDTO.getCountry());
+        foundAddress.setPlateCode(addressDTO.getPlateCode());
+        addressRepository.save(foundAddress);
+        return addressMapper.mapAddressToAddressDTO(foundAddress);
+
+
+    }
+
+    @Transactional
+    public String deleteAddressById(long addressId){
+
+        addressRepository.deleteById(addressId);
+        return "Address id = " + addressId + " Deleted....";
+
+    }
+
+    @Transactional
+    public String deleteAddressByObject(AddressDTO addressDTO){
+
+        Address foundAddress = addressMapper.mapAddressDTOToAddress(addressDTO);
+        addressRepository.delete(foundAddress);
+        return "Address Deleted......";
+
+    }
+
+
     public int numberOfStudents(){
 
         return studentRepository.numberOfStudents();
 
     }
+
     public Address findAddressById(long addressId){
 
-        Address foundAddress = addressRepository.findById(addressId).orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
-        return foundAddress;
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
 
     }
 

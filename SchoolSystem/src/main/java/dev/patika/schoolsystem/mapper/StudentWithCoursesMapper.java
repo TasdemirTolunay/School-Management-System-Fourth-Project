@@ -19,6 +19,8 @@ public abstract class StudentWithCoursesMapper {
     @Mapping(target = "studentsCourses", expression = "java(studentService.StudentsCourses(student.getId()))")
     @Mapping(target = "addressCity", expression = "java(studentService.studentsAddressCity(student.getId()))")
     public abstract StudentWithCoursesDTO mapStudentToStudentWithCoursesDTO(Student student);
+    public abstract Student mapStudentWithCoursesDTOToStudent(StudentWithCoursesDTO studentWithCoursesDTO);
     public abstract List<StudentWithCoursesDTO> mapStudentListToStudentWithCoursesDTOList(Collection<Student> students);
+    public abstract List<Student> mapStudentWithCoursesDTOListToStudentList(Collection<StudentWithCoursesDTO> studentWithCoursesDTOS);
 
 }

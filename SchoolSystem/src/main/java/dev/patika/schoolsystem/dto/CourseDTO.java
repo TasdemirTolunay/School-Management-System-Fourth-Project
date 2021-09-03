@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -31,7 +30,6 @@ public class CourseDTO extends BaseEntity {
     @NotNull(message = "Instructor id is mandatory")
     private long instructorId;
 
-    @Max(20)
     private int numberOfStudents;
 
 }
