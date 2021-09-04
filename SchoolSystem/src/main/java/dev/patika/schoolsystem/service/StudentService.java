@@ -16,6 +16,7 @@ import dev.patika.schoolsystem.mapper.StudentMapper;
 import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.AddressRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
+import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class StudentService {
     public StudentWithCoursesDTO findByStudentId(long studentId){
 
         Student foundStudent = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Student with ID: %d could not found!", studentId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.STUDENT_NOT_FOUND, studentId)));
         return studentWithCoursesMapper.mapStudentToStudentWithCoursesDTO(foundStudent);
 
     }
@@ -72,7 +73,7 @@ public class StudentService {
         int birthDateYear = foundStudent.getStudentBirthDate().getYear();
         int age = (LocalDate.now().getYear()) - birthDateYear;
         if(age < 18 || age > 40){
-            throw new StudentAgeNotValidException("Age cannot be younger than 18 or older than 40!!!");
+            throw new StudentAgeNotValidException(ErrorMessageConstants.WRONG_AGE);
         }
         return studentWithCoursesMapper.mapStudentToStudentWithCoursesDTO(studentRepository.save(foundStudent));
 
@@ -82,10 +83,15 @@ public class StudentService {
     public StudentWithCoursesDTO updateStudent(StudentDTO studentDTO, long studentId){
 
         Student foundStudent = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Student with ID: %d could not found!", studentId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.STUDENT_NOT_FOUND, studentId)));
         foundStudent.setStudentName(studentDTO.getStudentName());
         foundStudent.setStudentGender(studentDTO.getStudentGender());
         foundStudent.setStudentBirthDate(studentDTO.getStudentBirthDate());
+        int birthDateYear = foundStudent.getStudentBirthDate().getYear();
+        int age = (LocalDate.now().getYear()) - birthDateYear;
+        if(age < 18 || age > 40){
+            throw new StudentAgeNotValidException(ErrorMessageConstants.WRONG_AGE);
+        }
         studentRepository.save(foundStudent);
         return studentWithCoursesMapper.mapStudentToStudentWithCoursesDTO(foundStudent);
 
@@ -99,12 +105,12 @@ public class StudentService {
         studentIterable.iterator().forEachRemaining(studentList :: add);
         if(studentList.isEmpty()){
 
-            throw new EmptyListException("List is Empty!!!");
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
 
         }
         studentList.remove(studentRepository.findById(studentId).get());
-        studentRepository.deleteById(studentId);
-        return "Student id = " + studentId + " Deleted....";
+        studentRepository.saveAll(studentList);
+        return "Student with id = " + studentId + " Deleted....";
 
     }
 
@@ -112,7 +118,16 @@ public class StudentService {
     public String deleteStudentByObject(StudentDTO studentDTO){
 
         Student foundStudent = studentMapper.mapStudentDTOToStudent(studentDTO);
-        studentRepository.delete(foundStudent);
+        List<Student> studentList = new ArrayList<>();
+        Iterable<Student> studentIterable = studentRepository.findAll();
+        studentIterable.iterator().forEachRemaining(studentList :: add);
+        if(studentList.isEmpty()){
+
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
+
+        }
+        studentList.remove(foundStudent);
+        studentRepository.saveAll(studentList);
         return "Student Deleted.....";
 
     }
@@ -147,7 +162,7 @@ public class StudentService {
     public Address findAddressById(long addressId){
 
         Address foundAddress = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.ADDRESS_NOT_FOUND, addressId)));
 
         return foundAddress;
 
@@ -156,7 +171,7 @@ public class StudentService {
     public Student findStudentById(long studentId){
 
         return studentRepository.findById(studentId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Student with ID: %d could not found!", studentId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.STUDENT_NOT_FOUND, studentId)));
 
     }
 

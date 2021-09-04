@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -27,8 +26,7 @@ public class CourseDTO extends BaseEntity {
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private double courseCreditScore;
 
-    @NotNull(message = "Instructor id is mandatory")
-    private long instructorId;
+    private String  instructorName;
 
     private int numberOfStudents;
 

@@ -18,6 +18,7 @@ import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.CourseRepository;
 import dev.patika.schoolsystem.repository.InstructorRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
+import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class CourseService {
     public CourseDTO findByCourseId(long courseId){
 
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Course with ID: %d could not found!", courseId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.COURSE_NOT_FOUND, courseId)));
         return courseMapper.mapCourseToCourseDTO(course);
 
     }
@@ -81,7 +82,7 @@ public class CourseService {
 
         if(students.size() > 20){
 
-            throw new StudentNumberForOneCourseExceededException("A Course can have a maximum of 20 Students!!!");
+            throw new StudentNumberForOneCourseExceededException(ErrorMessageConstants.MAX_COURSE_STUDENTS);
 
         }
         courseRepository.save(foundCourse);
@@ -93,10 +94,15 @@ public class CourseService {
     public CourseDTO updateCourse(CourseDTO courseDTO, long courseId){
 
         Course foundCourse = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Course with ID: %d could not found!", courseId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.COURSE_NOT_FOUND, courseId)));
         foundCourse.setCourseName(courseDTO.getCourseName());
         foundCourse.setCourseCode(courseDTO.getCourseCode());
         foundCourse.setCourseCreditScore(courseDTO.getCourseCreditScore());
+        if(courseRepository.selectExistsCourseCode(foundCourse.getCourseCode())){
+
+            throw new CourseIsAlreadyExistException("Course With CourseCode : " + foundCourse.getCourseCode() + " is already exists!!!!");
+
+        }
         courseRepository.save(foundCourse);
         return courseMapper.mapCourseToCourseDTO(foundCourse);
 
@@ -105,17 +111,18 @@ public class CourseService {
     @Transactional
     public String deleteCourseById(long courseId){
 
+        Course foundCourse = courseRepository.findById(courseId).get();
         List<Course> courseList = new ArrayList<>();
         Iterable<Course> courseIterable = courseRepository.findAll();
         courseIterable.iterator().forEachRemaining(courseList :: add);
         if(courseList.isEmpty()){
 
-            throw new EmptyListException("List is Empty!!!");
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
 
         }
-        courseList.remove(courseRepository.findById(courseId).get());
-        courseRepository.deleteById(courseId);
-        return "Course id = " + courseId + " Deleted....";
+        courseList.remove(foundCourse);
+        courseRepository.saveAll(courseList);
+        return "Course with id = " + courseId + " Deleted....";
 
     }
 
@@ -123,7 +130,16 @@ public class CourseService {
     public String deleteCourseByObject(CourseDTO courseDTO){
 
         Course course = courseMapper.mapCourseDTOToCourse(courseDTO);
-        courseRepository.delete(course);
+        List<Course> courseList = new ArrayList<>();
+        Iterable<Course> courseIterable = courseRepository.findAll();
+        courseIterable.iterator().forEachRemaining(courseList :: add);
+        if(courseList.isEmpty()){
+
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
+
+        }
+        courseList.remove(course);
+        courseRepository.saveAll(courseList);
         return "Course Deleted.....";
 
     }
@@ -152,14 +168,14 @@ public class CourseService {
     public Course findCourseById(long courseId){
 
         return courseRepository.findById(courseId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Course with ID: %d could not found!", courseId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.COURSE_NOT_FOUND, courseId)));
 
     }
 
     public Instructor findInstructorById(long instructorId){
 
         Instructor foundInstructor = instructorRepository.findById(instructorId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Instructor with ID: %d could not found!", instructorId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.INSTRUCTOR_NOT_FOUND, instructorId)));
         return foundInstructor;
 
     }
@@ -182,10 +198,16 @@ public class CourseService {
 
             int finalI = i;
             Student foundStudent = studentRepository.findById(studensId.get(i))
-                    .orElseThrow(() -> new IdNotFoundException(String.format("Student with ID: %d could not found!", studensId.get(finalI))));
+                    .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.STUDENT_NOT_FOUND, studensId.get(finalI))));
             studentList.add(foundStudent);
         }
         return studentList;
+
+    }
+
+    public String getInstructorOfCourseName(long courseId){
+
+        return courseRepository.findById(courseId).get().getInstructor().getInstructorName();
 
     }
 

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +22,6 @@ public class InstructorDTO extends BaseEntity {
     @NotBlank(message = "Instructor Phone Number is mandatory")
     private String instructorPhoneNumber;
 
-    @NotNull(message = "Address Id is mandatory")
     private int addressId;
 
 }

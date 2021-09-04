@@ -1,15 +1,19 @@
 package dev.patika.schoolsystem.service;
 
 import dev.patika.schoolsystem.dto.AddressDTO;
+import dev.patika.schoolsystem.dto.InstructorResponseDTO;
+import dev.patika.schoolsystem.dto.StudentWithCoursesDTO;
 import dev.patika.schoolsystem.entity.Address;
 import dev.patika.schoolsystem.entity.Instructor;
 import dev.patika.schoolsystem.entity.Student;
 import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.mapper.AddressMapper;
+import dev.patika.schoolsystem.mapper.InstructorResponseMapper;
 import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.AddressRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
+import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,9 @@ public class AddressService {
     @Autowired
     private StudentWithCoursesMapper studentWithCoursesMapper;
 
+    @Autowired
+    private InstructorResponseMapper instructorResponseMapper;
+
 
     public List<AddressDTO> findAllAddress(){
 
@@ -42,7 +49,7 @@ public class AddressService {
         iteAddress.iterator().forEachRemaining(addressList :: add);
         List<AddressDTO> addressDTOList = addressMapper.mapAddressListToAddressDTOList(addressList);
         if(addressDTOList.isEmpty()){
-            throw new EmptyListException("List is empty.....");
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
         }
         return addressDTOList;
 
@@ -51,7 +58,7 @@ public class AddressService {
     public AddressDTO findByAddressId(long addressId){
 
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.ADDRESS_NOT_FOUND, addressId)));
         return addressMapper.mapAddressToAddressDTO(address);
 
     }
@@ -68,7 +75,7 @@ public class AddressService {
     public AddressDTO updateAddress(AddressDTO addressDTO, long addressId){
 
         Address foundAddress = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.ADDRESS_NOT_FOUND, addressId)));
         foundAddress.setCity(addressDTO.getCity());
         foundAddress.setCountry(addressDTO.getCountry());
         foundAddress.setPlateCode(addressDTO.getPlateCode());
@@ -86,12 +93,12 @@ public class AddressService {
         iteAddress.iterator().forEachRemaining(addressList :: add);
         if(addressList.isEmpty()){
 
-            throw new EmptyListException("List is Empty!!!");
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
 
         }
         addressList.remove(addressRepository.findById(addressId).get());
-        addressRepository.deleteById(addressId);
-        return "Address id = " + addressId + " Deleted....";
+        addressRepository.saveAll(addressList);
+        return "Address with id = " + addressId + " Deleted....";
 
     }
 
@@ -99,8 +106,31 @@ public class AddressService {
     public String deleteAddressByObject(AddressDTO addressDTO){
 
         Address foundAddress = addressMapper.mapAddressDTOToAddress(addressDTO);
-        addressRepository.delete(foundAddress);
+        List<Address> addressList = new ArrayList<>();
+        Iterable<Address> iteAddress = addressRepository.findAll();
+        iteAddress.iterator().forEachRemaining(addressList :: add);
+        if(addressList.isEmpty()){
+
+            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
+
+        }
+        addressList.remove(foundAddress);
+        addressRepository.saveAll(addressList);
         return "Address Deleted......";
+
+    }
+
+    public List<StudentWithCoursesDTO> getStudentsOfAddress(long addressId){
+
+        List<Student> studentList = addressRepository.findById(addressId).get().getStudentList();
+        return studentWithCoursesMapper.mapStudentListToStudentWithCoursesDTOList(studentList);
+
+    }
+
+    public List<InstructorResponseDTO> getInstructorsOfAddress(long addressId){
+
+        List<Instructor> instructorList = addressRepository.findById(addressId).get().getInstructorList();
+        return instructorResponseMapper.mapInstructorListToInstructorResponseDTOList(instructorList);
 
     }
 
@@ -114,7 +144,7 @@ public class AddressService {
     public Address findAddressById(long addressId){
 
         return addressRepository.findById(addressId)
-                .orElseThrow(() -> new IdNotFoundException(String.format("Address with ID: %d could not found!", addressId)));
+                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.ADDRESS_NOT_FOUND, addressId)));
 
     }
 
