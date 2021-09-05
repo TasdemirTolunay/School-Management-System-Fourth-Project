@@ -17,9 +17,11 @@ public class InstructorDTO extends BaseEntity {
     private long id;
 
     @NotBlank(message = "Instructor name is mandatory")
+    @ApiModelProperty(example = "Koray Guney")
     private String instructorName;
 
     @NotBlank(message = "Instructor Phone Number is mandatory")
+    @ApiModelProperty(example = "+905555555555")
     private String instructorPhoneNumber;
 
     private int addressId;

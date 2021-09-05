@@ -22,11 +22,11 @@ public class Address extends BaseEntity{
 
     //Relations with other classes
     @JsonManagedReference
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "studentAddress")
     private List<Student> studentList = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "instructorAddress")
     private List<Instructor> instructorList = new ArrayList<>();
 
 }

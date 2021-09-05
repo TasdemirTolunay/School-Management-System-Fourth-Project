@@ -17,11 +17,14 @@ public class AddressDTO extends BaseEntity {
     private long id;
 
     @NotBlank(message = "Country is mandatory")
+    @ApiModelProperty(example = "Turkiye")
     private String country;
 
+    @ApiModelProperty(example = "Ankara")
     @NotBlank(message = "City is mandatory")
     private String city;
 
+    @ApiModelProperty(example = "06")
     @NotBlank(message = "Plate code is mandatory")
     private String plateCode;
 

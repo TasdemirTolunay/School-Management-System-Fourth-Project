@@ -19,10 +19,6 @@ public class InstructorResponseDTO {
 
     private String instructorPhoneNumber;
 
-    private double fixedSalary;
-
-    private double hourlySalary;
-
     private String  addressCity;
 
     private List<String> instructorsCourseNames;

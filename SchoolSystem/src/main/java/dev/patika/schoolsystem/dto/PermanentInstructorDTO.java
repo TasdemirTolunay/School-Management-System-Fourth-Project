@@ -1,8 +1,8 @@
 package dev.patika.schoolsystem.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 public class PermanentInstructorDTO extends InstructorDTO{
 
     @NotNull(message = "Fixed Salary is mandatory")
-    @Min(0)
+    @ApiModelProperty(example = "9000")
     private double fixedSalary;
 
 }

@@ -6,7 +6,8 @@ import javax.persistence.Entity;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PermanentInstructor extends Instructor {
 
     private double fixedSalary;

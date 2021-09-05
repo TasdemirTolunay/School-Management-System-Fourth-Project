@@ -34,11 +34,13 @@ public abstract class InstructorMapper {
     @IterableMapping(elementTargetType = PermanentInstructorDTO.class)
     public abstract PermanentInstructorDTO mapInstructorToPermanentInstructorDTO(Instructor instructor);
 
+    @Mapping(target = "instructorAddress", expression = "java(instructorService.findAddressById(permanentInstructorDTO.getAddressId()))")
     public abstract Instructor mapPermanentInstructorDTOToInstructor(PermanentInstructorDTO permanentInstructorDTO);
 
     @IterableMapping(elementTargetType = VisitingResearcherDTO.class)
     public abstract VisitingResearcherDTO mapInstructorToVisitingResearcherDTO(Instructor instructor);
 
+    @Mapping(target = "instructorAddress", expression = "java(instructorService.findAddressById(visitingResearcherDTO.getAddressId()))")
     public abstract Instructor mapVisitingResearcherDTOToInstructor(VisitingResearcherDTO visitingResearcherDTO);
 
     @IterableMapping(elementTargetType = VisitingResearcherDTO.class)

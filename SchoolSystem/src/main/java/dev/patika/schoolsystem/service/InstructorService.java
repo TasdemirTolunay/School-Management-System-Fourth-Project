@@ -1,16 +1,11 @@
 package dev.patika.schoolsystem.service;
 
 import dev.patika.schoolsystem.dto.*;
-import dev.patika.schoolsystem.entity.Address;
-import dev.patika.schoolsystem.entity.Course;
-import dev.patika.schoolsystem.entity.Instructor;
+import dev.patika.schoolsystem.entity.*;
 import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.InstructorIsAlreadyExistException;
-import dev.patika.schoolsystem.mapper.AddressMapper;
-import dev.patika.schoolsystem.mapper.CourseMapper;
-import dev.patika.schoolsystem.mapper.InstructorMapper;
-import dev.patika.schoolsystem.mapper.InstructorResponseMapper;
+import dev.patika.schoolsystem.mapper.*;
 import dev.patika.schoolsystem.repository.AddressRepository;
 import dev.patika.schoolsystem.repository.InstructorRepository;
 import dev.patika.schoolsystem.util.ErrorMessageConstants;
@@ -37,6 +32,12 @@ public class InstructorService {
 
     @Autowired
     private InstructorMapper instructorMapper;
+
+    @Autowired
+    private PermanentInstructorMapper permanentInstructorMapper;
+
+    @Autowired
+    private VisitingResearcherMapper visitingResearcherMapper;
 
     @Autowired
     private CourseMapper courseMapper;
@@ -70,26 +71,27 @@ public class InstructorService {
     @Transactional
     public InstructorResponseDTO savePermanentInstructor(PermanentInstructorDTO permanentInstructorDTO){
 
-        Instructor instructor = instructorMapper.mapPermanentInstructorDTOToInstructor(permanentInstructorDTO);
+        PermanentInstructor instructor = permanentInstructorMapper.mapPermanentInstructorDTOToPermanentInstructor(permanentInstructorDTO);
         if(instructorRepository.selectExistsPhoneNumber(instructor.getInstructorPhoneNumber())){
 
             throw new InstructorIsAlreadyExistException("Instructor With PhoneNumber : " + instructor.getInstructorPhoneNumber() + " is already exists!!!!");
 
         }
-        return instructorResponseMapper.mapInstructorToInstructorResponseDTO(instructor);
+
+        return instructorResponseMapper.mapInstructorToInstructorResponseDTO(instructorRepository.save(instructor));
 
     }
 
     @Transactional
     public InstructorResponseDTO saveVisitingResearcherInstructor(VisitingResearcherDTO visitingResearcherDTO){
 
-        Instructor instructor = instructorMapper.mapVisitingResearcherDTOToInstructor(visitingResearcherDTO);
+        VisitingResearcher instructor = visitingResearcherMapper.mapVisitingResearcherDTOToVisitingResearcher(visitingResearcherDTO);
         if(instructorRepository.selectExistsPhoneNumber(instructor.getInstructorPhoneNumber())){
 
             throw new InstructorIsAlreadyExistException("Instructor With PhoneNumber : " + instructor.getInstructorPhoneNumber() + " is already exists!!!!");
 
         }
-        return instructorResponseMapper.mapInstructorToInstructorResponseDTO(instructor);
+        return instructorResponseMapper.mapInstructorToInstructorResponseDTO(instructorRepository.save(instructor));
 
     }
 

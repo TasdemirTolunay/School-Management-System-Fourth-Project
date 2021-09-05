@@ -20,11 +20,14 @@ public class StudentDTO extends BaseEntity {
     private long id;
 
     @NotBlank(message = "Student name is mandatory")
+    @ApiModelProperty(example = "Tolunay TASDEMIR")
     private String studentName;
 
+    @ApiModelProperty(example = "1996-02-12")
     private LocalDate studentBirthDate;
 
     @NotNull(message = "Gender is mandatory")
+    @ApiModelProperty(example = "Male")
     private Gender studentGender;
 
     @NotNull(message = "Address Id is mandatory")
