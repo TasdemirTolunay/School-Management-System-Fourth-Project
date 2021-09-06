@@ -180,9 +180,9 @@ public class CourseService {
 
     }
 
-    public int getNumberOfStudents(){
+    public int getNumberOfStudents(long courseId){
 
-        return studentRepository.numberOfStudents();
+        return courseRepository.findById(courseId).get().getStudents().size();
 
     }
 
