@@ -18,15 +18,12 @@ public class CourseDTO extends BaseEntity {
     private long id;
 
     @NotBlank(message = "Course name is mandatory")
-    @ApiModelProperty(example = "React BootCamp")
     private String courseName;
 
     @NotBlank(message = "Course Code is mandatory")
-    @ApiModelProperty(example = "R-00000221")
     private String courseCode;
 
     @NumberFormat(style = NumberFormat.Style.NUMBER)
-    @ApiModelProperty(example = "15")
     private double courseCreditScore;
 
     private String  instructorName;

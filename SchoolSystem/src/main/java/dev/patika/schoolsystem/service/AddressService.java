@@ -12,6 +12,7 @@ import dev.patika.schoolsystem.mapper.AddressMapper;
 import dev.patika.schoolsystem.mapper.InstructorResponseMapper;
 import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.AddressRepository;
+import dev.patika.schoolsystem.repository.InstructorRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
 import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,9 @@ public class AddressService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private InstructorRepository instructorRepository;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -88,35 +92,23 @@ public class AddressService {
     @Transactional
     public String deleteAddressById(long addressId){
 
-        List<Address> addressList = new ArrayList<>();
-        Iterable<Address> iteAddress = addressRepository.findAll();
-        iteAddress.iterator().forEachRemaining(addressList :: add);
-        if(addressList.isEmpty()){
+        List<Student> studentList = addressRepository.findById(addressId).get().getStudentList();
+        for (Student s : studentList) {
 
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
+            s.setStudentAddress(null);
+            studentRepository.save(s);
 
         }
-        addressList.remove(addressRepository.findById(addressId).get());
-        addressRepository.saveAll(addressList);
+        List<Instructor> instructorList = addressRepository.findById(addressId).get().getInstructorList();
+        for (Instructor i : instructorList) {
+
+            i.setInstructorAddress(null);
+            instructorRepository.save(i);
+
+        }
+        addressRepository.deleteById(addressId);
+
         return "Address with id = " + addressId + " Deleted....";
-
-    }
-
-    @Transactional
-    public String deleteAddressByObject(AddressDTO addressDTO){
-
-        Address foundAddress = addressMapper.mapAddressDTOToAddress(addressDTO);
-        List<Address> addressList = new ArrayList<>();
-        Iterable<Address> iteAddress = addressRepository.findAll();
-        iteAddress.iterator().forEachRemaining(addressList :: add);
-        if(addressList.isEmpty()){
-
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
-        }
-        addressList.remove(foundAddress);
-        addressRepository.saveAll(addressList);
-        return "Address Deleted......";
 
     }
 

@@ -1,9 +1,6 @@
 package dev.patika.schoolsystem.controller;
 
-import dev.patika.schoolsystem.dto.CourseDTO;
-import dev.patika.schoolsystem.dto.CourseWithStudentsDTO;
-import dev.patika.schoolsystem.dto.InstructorDTO;
-import dev.patika.schoolsystem.dto.StudentWithCoursesDTO;
+import dev.patika.schoolsystem.dto.*;
 import dev.patika.schoolsystem.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,7 +45,7 @@ public class CourseController {
     }
 
     @GetMapping("/instructor/{courseId}")
-    public ResponseEntity<InstructorDTO> getInstructorOfCourse(@PathVariable long courseId){
+    public ResponseEntity<InstructorResponseDTO> getInstructorOfCourse(@PathVariable long courseId){
 
         return new ResponseEntity<>(courseService.findInstructorOfCourse(courseId),HttpStatus.OK);
 
@@ -62,9 +59,9 @@ public class CourseController {
     }
 
     @PutMapping("/update/{courseId}")
-    public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseDTO courseDTO,@PathVariable long courseId){
+    public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseWithStudentsDTO courseWithStudentsDTO,@PathVariable long courseId){
 
-        return new ResponseEntity<>(courseService.updateCourse(courseDTO,courseId),HttpStatus.OK);
+        return new ResponseEntity<>(courseService.updateCourse(courseWithStudentsDTO,courseId),HttpStatus.OK);
 
     }
 
@@ -72,13 +69,6 @@ public class CourseController {
     public ResponseEntity<String> deleteCourseWithId(@PathVariable long courseId){
 
         return new ResponseEntity<>(courseService.deleteCourseById(courseId),HttpStatus.OK);
-
-    }
-
-    @DeleteMapping("/deleteWithBody")
-    public ResponseEntity<String> deleteCourseWithBody(@RequestBody CourseDTO courseDTO){
-
-        return new ResponseEntity<>(courseService.deleteCourseByObject(courseDTO),HttpStatus.OK);
 
     }
 

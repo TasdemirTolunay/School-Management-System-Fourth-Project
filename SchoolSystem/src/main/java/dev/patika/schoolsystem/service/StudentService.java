@@ -15,6 +15,7 @@ import dev.patika.schoolsystem.mapper.CourseMapper;
 import dev.patika.schoolsystem.mapper.StudentMapper;
 import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
 import dev.patika.schoolsystem.repository.AddressRepository;
+import dev.patika.schoolsystem.repository.CourseRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
 import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,9 @@ public class StudentService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private StudentWithCoursesMapper studentWithCoursesMapper;
@@ -100,35 +104,15 @@ public class StudentService {
     @Transactional
     public String deleteStudentById(long studentId){
 
-        List<Student> studentList = new ArrayList<>();
-        Iterable<Student> studentIterable = studentRepository.findAll();
-        studentIterable.iterator().forEachRemaining(studentList :: add);
-        if(studentList.isEmpty()){
+        Student foundStudent = studentRepository.findById(studentId).get();
+        List<Course> courseList = foundStudent.getCourses();
+        for (Course c : courseList) {
 
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
+            c.getStudents().remove(foundStudent);
+            courseRepository.save(c);
         }
-        studentList.remove(studentRepository.findById(studentId).get());
-        studentRepository.saveAll(studentList);
+        studentRepository.deleteById(studentId);
         return "Student with id = " + studentId + " Deleted....";
-
-    }
-
-    @Transactional
-    public String deleteStudentByObject(StudentDTO studentDTO){
-
-        Student foundStudent = studentMapper.mapStudentDTOToStudent(studentDTO);
-        List<Student> studentList = new ArrayList<>();
-        Iterable<Student> studentIterable = studentRepository.findAll();
-        studentIterable.iterator().forEachRemaining(studentList :: add);
-        if(studentList.isEmpty()){
-
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
-        }
-        studentList.remove(foundStudent);
-        studentRepository.saveAll(studentList);
-        return "Student Deleted.....";
 
     }
 

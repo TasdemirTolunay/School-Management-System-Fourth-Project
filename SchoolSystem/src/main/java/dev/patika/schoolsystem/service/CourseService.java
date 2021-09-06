@@ -1,9 +1,6 @@
 package dev.patika.schoolsystem.service;
 
-import dev.patika.schoolsystem.dto.CourseDTO;
-import dev.patika.schoolsystem.dto.CourseWithStudentsDTO;
-import dev.patika.schoolsystem.dto.InstructorDTO;
-import dev.patika.schoolsystem.dto.StudentWithCoursesDTO;
+import dev.patika.schoolsystem.dto.*;
 import dev.patika.schoolsystem.entity.Course;
 import dev.patika.schoolsystem.entity.Instructor;
 import dev.patika.schoolsystem.entity.Student;
@@ -11,10 +8,7 @@ import dev.patika.schoolsystem.exceptions.CourseIsAlreadyExistException;
 import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.StudentNumberForOneCourseExceededException;
-import dev.patika.schoolsystem.mapper.CourseMapper;
-import dev.patika.schoolsystem.mapper.CourseWithStudentsMapper;
-import dev.patika.schoolsystem.mapper.InstructorMapper;
-import dev.patika.schoolsystem.mapper.StudentWithCoursesMapper;
+import dev.patika.schoolsystem.mapper.*;
 import dev.patika.schoolsystem.repository.CourseRepository;
 import dev.patika.schoolsystem.repository.InstructorRepository;
 import dev.patika.schoolsystem.repository.StudentRepository;
@@ -44,7 +38,7 @@ public class CourseService {
     private CourseMapper courseMapper;
 
     @Autowired
-    private InstructorMapper instructorMapper;
+    private InstructorResponseMapper instructorResponseMapper;
 
     @Autowired
     private StudentWithCoursesMapper studentWithCoursesMapper;
@@ -91,18 +85,18 @@ public class CourseService {
     }
 
     @Transactional
-    public CourseDTO updateCourse(CourseDTO courseDTO, long courseId){
+    public CourseDTO updateCourse(CourseWithStudentsDTO courseWithStudentsDTO, long courseId){
 
         Course foundCourse = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.COURSE_NOT_FOUND, courseId)));
-        foundCourse.setCourseName(courseDTO.getCourseName());
-        foundCourse.setCourseCode(courseDTO.getCourseCode());
-        foundCourse.setCourseCreditScore(courseDTO.getCourseCreditScore());
-        if(courseRepository.selectExistsCourseCode(foundCourse.getCourseCode())){
+        if(courseRepository.selectExistsCourseCode(courseWithStudentsDTO.getCourseCode())){
 
-            throw new CourseIsAlreadyExistException("Course With CourseCode : " + foundCourse.getCourseCode() + " is already exists!!!!");
+            throw new CourseIsAlreadyExistException("Course With CourseCode : " + courseWithStudentsDTO.getCourseCode() + " is already exists!!!!");
 
         }
+        foundCourse.setCourseName(courseWithStudentsDTO.getCourseName());
+        foundCourse.setCourseCode(courseWithStudentsDTO.getCourseCode());
+        foundCourse.setCourseCreditScore(courseWithStudentsDTO.getCourseCreditScore());
         courseRepository.save(foundCourse);
         return courseMapper.mapCourseToCourseDTO(foundCourse);
 
@@ -111,36 +105,8 @@ public class CourseService {
     @Transactional
     public String deleteCourseById(long courseId){
 
-        Course foundCourse = courseRepository.findById(courseId).get();
-        List<Course> courseList = new ArrayList<>();
-        Iterable<Course> courseIterable = courseRepository.findAll();
-        courseIterable.iterator().forEachRemaining(courseList :: add);
-        if(courseList.isEmpty()){
-
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
-        }
-        courseList.remove(foundCourse);
-        courseRepository.saveAll(courseList);
+        courseRepository.deleteById(courseId);
         return "Course with id = " + courseId + " Deleted....";
-
-    }
-
-    @Transactional
-    public String deleteCourseByObject(CourseDTO courseDTO){
-
-        Course course = courseMapper.mapCourseDTOToCourse(courseDTO);
-        List<Course> courseList = new ArrayList<>();
-        Iterable<Course> courseIterable = courseRepository.findAll();
-        courseIterable.iterator().forEachRemaining(courseList :: add);
-        if(courseList.isEmpty()){
-
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
-        }
-        courseList.remove(course);
-        courseRepository.saveAll(courseList);
-        return "Course Deleted.....";
 
     }
 
@@ -158,10 +124,10 @@ public class CourseService {
 
     }
 
-    public InstructorDTO findInstructorOfCourse(long courseId){
+    public InstructorResponseDTO findInstructorOfCourse(long courseId){
 
         Instructor instructorList = courseRepository.findById(courseId).get().getInstructor();
-        return instructorMapper.mapInstructorToInstructorDTO(instructorList);
+        return instructorResponseMapper.mapInstructorToInstructorResponseDTO(instructorList);
 
     }
 

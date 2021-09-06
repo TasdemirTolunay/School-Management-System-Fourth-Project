@@ -7,6 +7,7 @@ import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.InstructorIsAlreadyExistException;
 import dev.patika.schoolsystem.mapper.*;
 import dev.patika.schoolsystem.repository.AddressRepository;
+import dev.patika.schoolsystem.repository.CourseRepository;
 import dev.patika.schoolsystem.repository.InstructorRepository;
 import dev.patika.schoolsystem.util.ErrorMessageConstants;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,9 @@ public class InstructorService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private InstructorResponseMapper instructorResponseMapper;
@@ -100,14 +104,13 @@ public class InstructorService {
 
         Instructor foundInstructor = instructorRepository.findById(instructorId)
                 .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.INSTRUCTOR_NOT_FOUND, instructorId)));
-        Instructor instructorDTOToInstructor = instructorMapper.mapInstructorDTOToInstructor(instructorDTO);
-        foundInstructor.setInstructorName(instructorDTOToInstructor.getInstructorName());
-        foundInstructor.setInstructorPhoneNumber(instructorDTOToInstructor.getInstructorPhoneNumber());
-        if(instructorRepository.selectExistsPhoneNumber(foundInstructor.getInstructorPhoneNumber())){
+        if(instructorRepository.selectExistsPhoneNumber(instructorDTO.getInstructorPhoneNumber())){
 
-            throw new InstructorIsAlreadyExistException("Instructor With PhoneNumber : " + foundInstructor.getInstructorPhoneNumber() + " is already exists!!!!");
+            throw new InstructorIsAlreadyExistException("Instructor With PhoneNumber : " + instructorDTO.getInstructorPhoneNumber() + " is already exists!!!!");
 
         }
+        foundInstructor.setInstructorName(instructorDTO.getInstructorName());
+        foundInstructor.setInstructorPhoneNumber(instructorDTO.getInstructorPhoneNumber());
         instructorRepository.save(foundInstructor);
         return instructorResponseMapper.mapInstructorToInstructorResponseDTO(foundInstructor);
 
@@ -116,37 +119,15 @@ public class InstructorService {
     @Transactional
     public String deleteInstructorById(long instructorId){
 
-        List<Instructor> instructorList = new ArrayList<>();
-        Instructor foundInstructor = instructorRepository.findById(instructorId)
-                .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.INSTRUCTOR_NOT_FOUND, instructorId)));
-        Iterable<Instructor> instructorIterable = instructorRepository.findAll();
-        instructorIterable.iterator().forEachRemaining(instructorList :: add);
-        if(instructorList.isEmpty()){
+        List<Course> courseList = instructorRepository.findById(instructorId).get().getCourseList();
+        for (Course c : courseList) {
 
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
+            c.setInstructor(null);
+            courseRepository.save(c);
 
         }
-        instructorList.remove(foundInstructor);
-        instructorRepository.saveAll(instructorList);
+        instructorRepository.deleteById(instructorId);
         return "Instructor with id = " + instructorId + " Deleted....";
-
-    }
-
-    @Transactional
-    public String  deleteInstructorByObject(InstructorDTO instructorDTO){
-
-        Instructor foundInstructor = instructorMapper.mapInstructorDTOToInstructor(instructorDTO);
-        List<Instructor> instructorList = new ArrayList<>();
-        Iterable<Instructor> instructorIterable = instructorRepository.findAll();
-        instructorIterable.iterator().forEachRemaining(instructorList :: add);
-        if(instructorList.isEmpty()){
-
-            throw new EmptyListException(ErrorMessageConstants.EMPTY_LIST);
-
-        }
-        instructorList.remove(foundInstructor);
-        instructorRepository.saveAll(instructorList);
-        return "Instructor Deleted.....";
 
     }
 

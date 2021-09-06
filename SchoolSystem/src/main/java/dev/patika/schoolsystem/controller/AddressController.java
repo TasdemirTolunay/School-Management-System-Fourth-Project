@@ -67,11 +67,4 @@ public class AddressController {
 
     }
 
-    @DeleteMapping("/deleteWithBody")
-    public ResponseEntity<String> deleteAddressWithBody(@RequestBody AddressDTO addressDTO){
-
-        return new ResponseEntity<>(addressService.deleteAddressByObject(addressDTO),HttpStatus.OK);
-
-    }
-
 }

@@ -79,11 +79,4 @@ public class InstructorController {
 
     }
 
-    @DeleteMapping("/deleteWithBody")
-    public ResponseEntity<String> deleteInstructorWithBody(@RequestBody InstructorDTO instructorDTO){
-
-        return new ResponseEntity<>(instructorService.deleteInstructorByObject(instructorDTO),HttpStatus.OK);
-
-    }
-
 }
