@@ -1,13 +1,17 @@
 package dev.patika.schoolsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a address enrolled in the student and instructor.
+ * An address can be enrolled in many students.
+ * An address can be enrolled in many instructors.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,12 +19,16 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Address extends BaseEntity{
 
-    //Variables
+    /**
+     * This address's variables.
+     */
     private String country;
     private String city;
     private String plateCode;
 
-    //Relations with other classes
+    /**
+     * Defines the relation of the address with the student and the instructor.
+     */
     @JsonManagedReference
     @OneToMany(mappedBy = "studentAddress")
     private List<Student> studentList = new ArrayList<>();

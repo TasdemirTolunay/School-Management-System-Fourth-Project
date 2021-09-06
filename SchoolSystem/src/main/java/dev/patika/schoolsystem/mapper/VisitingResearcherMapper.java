@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Using the mapstruct, the VisitingResearcher object is mapped to the VisitingResearcherDTO object.
+ */
 @Mapper(componentModel = "spring")
 public abstract class VisitingResearcherMapper {
 

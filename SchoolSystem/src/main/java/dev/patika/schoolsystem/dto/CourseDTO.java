@@ -9,25 +9,23 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * An Course DTO class that will return as the response object of the course class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseDTO extends BaseEntity {
 
+    /**
+     * Variables to display as response body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
-
-    @NotBlank(message = "Course name is mandatory")
     private String courseName;
-
-    @NotBlank(message = "Course Code is mandatory")
     private String courseCode;
-
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
     private double courseCreditScore;
-
     private String  instructorName;
-
     private int numberOfStudents;
 
 }

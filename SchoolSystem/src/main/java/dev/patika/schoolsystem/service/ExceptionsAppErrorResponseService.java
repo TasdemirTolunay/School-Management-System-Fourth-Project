@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains methods of transaction on the exceptions.
+ */
 @Service
 @RequiredArgsConstructor
 public class ExceptionsAppErrorResponseService {
@@ -19,6 +22,10 @@ public class ExceptionsAppErrorResponseService {
     @Autowired
     private ExceptionsAppErrorResponseRepository responseRepository;
 
+    /**
+     * Gets all thrown exceptions logged in the database.
+     * @return Exception List
+     */
     public List<ExceptionsAppErrorResponse> findAllExceptions(){
 
         List<ExceptionsAppErrorResponse> errorResponseList = new ArrayList<>();
@@ -33,6 +40,11 @@ public class ExceptionsAppErrorResponseService {
 
     }
 
+    /**
+     * Gets thrown exceptions logged in the database by throw date.
+     * @param throwDate Date the error was thrown.
+     * @return Exceptions by throw date.
+     */
     public List<ExceptionsAppErrorResponse> findExceptionsByThrowDate(String throwDate){
 
         LocalDate date = LocalDate.parse(throwDate);
@@ -40,12 +52,22 @@ public class ExceptionsAppErrorResponseService {
 
     }
 
+    /**
+     * Gets thrown exceptions logged in the database by exception type.
+     * @param typeName Type of exception.
+     * @return Exceptions by Type.
+     */
     public List<ExceptionsAppErrorResponse> findExceptionsByTypeName(String typeName){
 
         return responseRepository.getExceptionsAppErrorResponsesByExceptionType(typeName);
 
     }
 
+    /**
+     * Gets thrown exceptions logged in the database by exception status code.
+     * @param statusCode exception status code
+     * @return Exceptions by Status Code.
+     */
     public List<ExceptionsAppErrorResponse> findExceptionsByStatusCode(int statusCode){
 
         return responseRepository.findExceptionsAppErrorResponsesByStatus(statusCode);

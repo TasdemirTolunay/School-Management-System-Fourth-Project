@@ -27,6 +27,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains methods of transaction on the student.
+ */
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -52,7 +55,10 @@ public class StudentService {
     @Autowired
     private AddressMapper addressMapper;
 
-
+    /**
+     * Gets all student list on the database.
+     * @return Student List
+     */
     public List<StudentWithCoursesDTO> findAllStudents(){
 
         List<Student> studentList = new ArrayList<>();
@@ -62,6 +68,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Gets a student with id.
+     * @param studentId The entered id parameter matches the id in the database.
+     * @return Student
+     */
     public StudentWithCoursesDTO findByStudentId(long studentId){
 
         Student foundStudent = studentRepository.findById(studentId)
@@ -70,6 +81,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Performs student save to the database.
+     * @param studentDTO The sent studentDTO object is saved.
+     * @return Returns the saved studentDTO object.
+     */
     @Transactional
     public StudentWithCoursesDTO saveStudent(StudentDTO studentDTO){
 
@@ -83,6 +99,12 @@ public class StudentService {
 
     }
 
+    /**
+     * Updating an object in the database.
+     * @param studentDTO new values are sent with studentDTO.
+     * @param studentId The Student object to be updated is found by id.
+     * @return The updated Student object returns.
+     */
     @Transactional
     public StudentWithCoursesDTO updateStudent(StudentDTO studentDTO, long studentId){
 
@@ -101,6 +123,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Deletion of an object in the database.
+     * @param studentId The Student object to be deleted is found by id.
+     * @return Deleted information returns.
+     */
     @Transactional
     public String deleteStudentById(long studentId){
 
@@ -116,6 +143,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Gets a student with instructor name.
+     * @param studentName The entered student name parameter matches the student name in the database.
+     * @return Student by name
+     */
     public List<StudentWithCoursesDTO> findStudentByName(String studentName){
 
         List<Student> studentList = studentRepository.findStudentByStudentName(studentName);
@@ -123,12 +155,21 @@ public class StudentService {
 
     }
 
+    /**
+     * Group them by gender.
+     * @return Gender groups.
+     */
     public List<?> genderGroups(){
 
         return studentRepository.getGenderWithGrouping();
 
     }
 
+    /**
+     * Gets courses registered to the student.
+     * @param studentId Student found by id.
+     * @return Returns courses registered at the student.
+     */
     public List<CourseDTO> findCoursesOfStudent(long studentId){
 
         List<Course> courseList = studentRepository.findById(studentId).get().getCourses();
@@ -136,6 +177,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Gets address registered to the student.
+     * @param studentId Student found by id.
+     * @return Returns address registered at the student.
+     */
     public AddressDTO findAddressOfStudent(long studentId){
 
         Address address = studentRepository.findById(studentId).get().getStudentAddress();
@@ -143,6 +189,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Address object found by id.
+     * @param addressId Address found by id.
+     * @return An Address.
+     */
     public Address findAddressById(long addressId){
 
         Address foundAddress = addressRepository.findById(addressId)
@@ -152,6 +203,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Student object found by id.
+     * @param studentId Student found by id.
+     * @return A Student.
+     */
     public Student findStudentById(long studentId){
 
         return studentRepository.findById(studentId)
@@ -159,6 +215,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Finds course names offered by the student.
+     * @param studentId Student found by id.
+     * @return Course Names
+     */
     public List<String> StudentsCourses(long studentId){
 
         List<String> courseNames = new ArrayList<>();
@@ -173,6 +234,11 @@ public class StudentService {
 
     }
 
+    /**
+     * Gets the city of the student's address.
+     * @param studentId Student found by id.
+     * @return City of address
+     */
     public String  studentsAddressCity(long studentId){
 
         return findStudentById(studentId).getStudentAddress().getCity();

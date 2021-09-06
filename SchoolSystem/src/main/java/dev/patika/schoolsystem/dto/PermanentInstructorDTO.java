@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * An PermanentInstructor DTO class that will return as the request and response object of the PermanentInstructor class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

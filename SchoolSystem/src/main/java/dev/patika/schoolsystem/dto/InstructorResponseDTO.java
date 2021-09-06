@@ -7,11 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ *  An InstructorResponse DTO class that will return as the response object of the instructor class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstructorResponseDTO {
 
+    /**
+     * Variables to display as response body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
 

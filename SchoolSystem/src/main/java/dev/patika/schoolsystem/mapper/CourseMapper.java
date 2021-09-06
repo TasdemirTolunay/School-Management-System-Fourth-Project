@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Using the mapstruct, the Course object is mapped to the CourseDTO object.
+ */
 @Mapper(componentModel = "spring")
 public abstract class CourseMapper {
 

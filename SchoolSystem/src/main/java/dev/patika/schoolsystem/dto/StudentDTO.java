@@ -11,11 +11,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+/**
+ *  An Student DTO class that will return as the request object of the student class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDTO extends BaseEntity {
 
+    /**
+     * Variables to display as request body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
 

@@ -12,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
+/**
+ * Is the class that will log the error information in the project.
+ */
 @Data
 @Entity
 @AllArgsConstructor

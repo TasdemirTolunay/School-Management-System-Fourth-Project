@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * It is a control class that enables operations within the service class to be performed using get mapping on the web base.
+ */
 @RestController
 @RequestMapping("/exception")
 @RequiredArgsConstructor

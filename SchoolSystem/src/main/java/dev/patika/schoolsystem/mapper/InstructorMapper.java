@@ -10,10 +10,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Using the mapstruct, the Instructor object is mapped to the InstructorDTO, the PermanentInstructorDTO and the VisitingResearcherDTO objects.
+ */
 @Mapper(componentModel = "spring", uses = {PermanentInstructorMapper.class, VisitingResearcherMapper.class})
 public abstract class InstructorMapper {
 

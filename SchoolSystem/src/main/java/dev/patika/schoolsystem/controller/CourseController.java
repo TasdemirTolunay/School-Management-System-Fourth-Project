@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * It is a control class that enables operations within the service class to be performed using get, post, delete and put mapping on the web base.
+ */
 @RestController
 @RequestMapping("/course")
 @RequiredArgsConstructor

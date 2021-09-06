@@ -5,7 +5,6 @@ import dev.patika.schoolsystem.entity.Course;
 import dev.patika.schoolsystem.entity.Instructor;
 import dev.patika.schoolsystem.entity.Student;
 import dev.patika.schoolsystem.exceptions.CourseIsAlreadyExistException;
-import dev.patika.schoolsystem.exceptions.EmptyListException;
 import dev.patika.schoolsystem.exceptions.IdNotFoundException;
 import dev.patika.schoolsystem.exceptions.StudentNumberForOneCourseExceededException;
 import dev.patika.schoolsystem.mapper.*;
@@ -21,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains methods of transaction on the course.
+ */
 @Service
 @RequiredArgsConstructor
 public class CourseService {
@@ -46,6 +48,10 @@ public class CourseService {
     @Autowired
     private CourseWithStudentsMapper courseWithStudentsMapper;
 
+    /**
+     * Gets all course list on the database.
+     * @return Course List
+     */
     public List<CourseDTO> findAllCourses(){
 
         List<Course> courseList = new ArrayList<>();
@@ -55,6 +61,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Gets a course with id.
+     * @param courseId The entered id parameter matches the id in the database.
+     * @return Course
+     */
     public CourseDTO findByCourseId(long courseId){
 
         Course course = courseRepository.findById(courseId)
@@ -63,6 +74,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Performs course save to the database.
+     * @param courseWithStudentsDTO The sent courseWithStudentsDTO object is saved.
+     * @return Returns the saved courseWithStudentsDTO object.
+     */
     @Transactional
     public CourseDTO saveCourse(CourseWithStudentsDTO courseWithStudentsDTO){
 
@@ -84,6 +100,12 @@ public class CourseService {
 
     }
 
+    /**
+     * Updating an object in the database.
+     * @param courseWithStudentsDTO new values are sent with courseWithStudentsDTO.
+     * @param courseId The Course object to be updated is found by id.
+     * @return The updated Course object returns.
+     */
     @Transactional
     public CourseDTO updateCourse(CourseWithStudentsDTO courseWithStudentsDTO, long courseId){
 
@@ -102,6 +124,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Deletion of an object in the database.
+     * @param courseId The Course object to be deleted is found by id.
+     * @return Deleted information returns.
+     */
     @Transactional
     public String deleteCourseById(long courseId){
 
@@ -110,6 +137,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Gets a course with course name.
+     * @param courseName The entered course name parameter matches the course name in the database.
+     * @return Course
+     */
     public List<CourseDTO> findCourseByName(String courseName){
 
         List<Course> foundCourses = courseRepository.findByCourseName(courseName);
@@ -117,6 +149,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Gets students registered to the course.
+     * @param courseId Course found by id.
+     * @return Returns students registered at the course.
+     */
     public List<StudentWithCoursesDTO> findStudentsOfCourse(long courseId){
 
         List<Student> studentList = courseRepository.findById(courseId).get().getStudents();
@@ -124,6 +161,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Gets instructors registered to the course.
+     * @param courseId Course found by id.
+     * @return Returns instructors registered at the course.
+     */
     public InstructorResponseDTO findInstructorOfCourse(long courseId){
 
         Instructor instructorList = courseRepository.findById(courseId).get().getInstructor();
@@ -131,6 +173,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Course object found by id.
+     * @param courseId Course found by id.
+     * @return Course
+     */
     public Course findCourseById(long courseId){
 
         return courseRepository.findById(courseId)
@@ -138,6 +185,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Instructor object found by id.
+     * @param instructorId Instructor found by id.
+     * @return Instructor
+     */
     public Instructor findInstructorById(long instructorId){
 
         Instructor foundInstructor = instructorRepository.findById(instructorId)
@@ -146,18 +198,22 @@ public class CourseService {
 
     }
 
+    /**
+     * Gets the number of students enrolled in the course.
+     * @param courseId Course found by id.
+     * @return The number of students enrolled in the course returns.
+     */
     public int getNumberOfStudents(long courseId){
 
         return courseRepository.findById(courseId).get().getStudents().size();
 
     }
 
-    public long instructorOfCourseId(long courseId){
-        
-        return findCourseById(courseId).getInstructor().getId();
-
-    }
-
+    /**
+     * Finds students with the id's.
+     * @param studensId Ids of students are sent.
+     * @return Student List
+     */
     public List<Student> findAllStudentsWithIds(List<Long> studensId){
         List<Student> studentList = new ArrayList<>();
         for (int i = 0; i < studensId.size(); i ++) {
@@ -171,6 +227,11 @@ public class CourseService {
 
     }
 
+    /**
+     * Finds the name of the instructor giving the course.
+     * @param courseId Course found by id.
+     * @return Instructor Name
+     */
     public String getInstructorOfCourseName(long courseId){
 
         return courseRepository.findById(courseId).get().getInstructor().getInstructorName();

@@ -8,11 +8,17 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * An Address DTO class that will return as the request and response object of the address class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressDTO extends BaseEntity {
 
+    /**
+     * Variables to display as request and response body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
 

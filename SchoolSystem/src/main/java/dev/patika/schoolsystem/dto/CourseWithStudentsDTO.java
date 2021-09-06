@@ -11,11 +11,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * An CourseWithStudents DTO class that will return as the request object of the course class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseWithStudentsDTO{
 
+    /**
+     * Variables to display as request body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
 

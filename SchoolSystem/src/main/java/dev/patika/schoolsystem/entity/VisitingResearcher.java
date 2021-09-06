@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.Entity;
 
+/**
+ * VisitingResearcher is the type of instructor that receives a hourly salary.
+ */
 @Entity
 @Data
 @AllArgsConstructor

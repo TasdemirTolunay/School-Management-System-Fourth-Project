@@ -23,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains methods of transaction on the address.
+ */
 @Service
 @RequiredArgsConstructor
 public class AddressService {
@@ -46,6 +49,10 @@ public class AddressService {
     private InstructorResponseMapper instructorResponseMapper;
 
 
+    /**
+     * Gets all address list on the database.
+     * @return Address List
+     */
     public List<AddressDTO> findAllAddress(){
 
         List<Address> addressList = new ArrayList<>();
@@ -59,6 +66,11 @@ public class AddressService {
 
     }
 
+    /**
+     * Gets an address with id.
+     * @param addressId The entered id parameter matches the id in the database.
+     * @return Address with id.
+     */
     public AddressDTO findByAddressId(long addressId){
 
         Address address = addressRepository.findById(addressId)
@@ -67,6 +79,11 @@ public class AddressService {
 
     }
 
+    /**
+     * Performs address save to the database.
+     * @param addressDTO The sent addressDTO object is saved.
+     * @return Returns the saved addressDTO object.
+     */
     @Transactional
     public AddressDTO saveAddress(AddressDTO addressDTO){
 
@@ -75,6 +92,12 @@ public class AddressService {
 
     }
 
+    /**
+     * Updating an object in the database.
+     * @param addressDTO new values are sent with AddressDTO.
+     * @param addressId The Address object to be updated is found by id.
+     * @return The updated Address object returns.
+     */
     @Transactional
     public AddressDTO updateAddress(AddressDTO addressDTO, long addressId){
 
@@ -89,6 +112,11 @@ public class AddressService {
 
     }
 
+    /**
+     * Deletion of an object in the database.
+     * @param addressId The Address object to be deleted is found by id.
+     * @return Deleted information returns.
+     */
     @Transactional
     public String deleteAddressById(long addressId){
 
@@ -112,6 +140,11 @@ public class AddressService {
 
     }
 
+    /**
+     * Gets students registered to the address.
+     * @param addressId Address found by id.
+     * @return Returns students registered at the address.
+     */
     public List<StudentWithCoursesDTO> getStudentsOfAddress(long addressId){
 
         List<Student> studentList = addressRepository.findById(addressId).get().getStudentList();
@@ -119,6 +152,11 @@ public class AddressService {
 
     }
 
+    /**
+     * Gets instructors registered to the address.
+     * @param addressId Address found by id.
+     * @return Returns instructors registered at the address.
+     */
     public List<InstructorResponseDTO> getInstructorsOfAddress(long addressId){
 
         List<Instructor> instructorList = addressRepository.findById(addressId).get().getInstructorList();
@@ -126,20 +164,16 @@ public class AddressService {
 
     }
 
-
-    public int numberOfStudents(){
-
-        return studentRepository.numberOfStudents();
-
-    }
-
+    /**
+     * Address object found by id.
+     * @param addressId Address found by id.
+     * @return An Address.
+     */
     public Address findAddressById(long addressId){
 
         return addressRepository.findById(addressId)
                 .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.ADDRESS_NOT_FOUND, addressId)));
 
     }
-
-
 
 }

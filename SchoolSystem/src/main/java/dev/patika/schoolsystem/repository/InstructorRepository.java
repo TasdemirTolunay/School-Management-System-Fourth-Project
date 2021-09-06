@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * It is the class used to perform operations on the database.
+ * By extending the crud repository, operations on the database are performed with spring data jpa.
+ */
 @Repository
 public interface InstructorRepository extends CrudRepository<Instructor, Long> {
 

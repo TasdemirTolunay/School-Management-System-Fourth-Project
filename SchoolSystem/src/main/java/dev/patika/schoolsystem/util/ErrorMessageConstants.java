@@ -1,5 +1,8 @@
 package dev.patika.schoolsystem.util;
 
+/**
+ * Class with error messages
+ */
 public class ErrorMessageConstants {
 
     public static final String EMPTY_LIST = "List is empty.....";

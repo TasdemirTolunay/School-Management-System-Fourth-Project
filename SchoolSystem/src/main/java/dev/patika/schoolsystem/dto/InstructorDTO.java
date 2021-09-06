@@ -8,11 +8,17 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ *  An Instructor DTO class that will return as the request object of the instructor class.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstructorDTO extends BaseEntity {
 
+    /**
+     * Variables to display as request body.
+     */
     @ApiModelProperty(hidden = true)
     private long id;
 

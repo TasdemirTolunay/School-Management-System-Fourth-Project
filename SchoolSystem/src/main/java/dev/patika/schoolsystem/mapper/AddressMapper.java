@@ -7,6 +7,9 @@ import org.mapstruct.Mapper;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Using the mapstruct, the address object is mapped to the addressDTO object.
+ */
 @Mapper(componentModel = "spring")
 public abstract class AddressMapper {
 
