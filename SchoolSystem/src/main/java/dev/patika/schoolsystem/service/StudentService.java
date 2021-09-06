@@ -88,14 +88,14 @@ public class StudentService {
 
         Student foundStudent = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IdNotFoundException(String.format(ErrorMessageConstants.STUDENT_NOT_FOUND, studentId)));
-        foundStudent.setStudentName(studentDTO.getStudentName());
-        foundStudent.setStudentGender(studentDTO.getStudentGender());
-        foundStudent.setStudentBirthDate(studentDTO.getStudentBirthDate());
-        int birthDateYear = foundStudent.getStudentBirthDate().getYear();
+        int birthDateYear = studentDTO.getStudentBirthDate().getYear();
         int age = (LocalDate.now().getYear()) - birthDateYear;
         if(age < 18 || age > 40){
             throw new StudentAgeNotValidException(ErrorMessageConstants.WRONG_AGE);
         }
+        foundStudent.setStudentName(studentDTO.getStudentName());
+        foundStudent.setStudentGender(studentDTO.getStudentGender());
+        foundStudent.setStudentBirthDate(studentDTO.getStudentBirthDate());
         studentRepository.save(foundStudent);
         return studentWithCoursesMapper.mapStudentToStudentWithCoursesDTO(foundStudent);
 
