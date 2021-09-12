@@ -1,3 +1,29 @@
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#description-about-the-project">Description About The Project</a>
+      <ul>
+        <li><a href="#school-management-system-uml-diagram">School Management System Uml Diagram</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#some-exceptions-in-the-project">Some Exceptions In The Project</a></li>
+      </ul>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#fourth-project">Fourth Projects Information</a></li>
+  </ol>
+</details>
+
 ## Description About The Project
 
 ---
@@ -19,7 +45,7 @@
 
 - Thrown errors are logged in the database.
 
-### School Management System UML Diagram
+### School Management System Uml Diagram
 
 ![UmlDiagram](SchoolSystem/src/main/java/images/FourthHomework.jpg)
 
